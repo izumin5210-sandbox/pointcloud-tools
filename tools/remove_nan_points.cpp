@@ -12,19 +12,15 @@
 #include <boost/filesystem.hpp>
 #include <boost/range/iterator_range.hpp>
 
+#include "utils/pctools/utils.hpp"
+
 namespace pc = pcl::console;
 namespace bfs = boost::filesystem;
 
+using namespace pctools;
+
 std::string dir_in;
 std::string dir_out;
-
-void shutdown_with_error(const char* format, ...) {
-  va_list ap;
-  va_start(ap, format);
-  pc::print_error(format, ap);
-  va_end(ap);
-  exit(-1);
-}
 
 void print_usage(char *argv[]) {
   std::cout << "Usage: " << argv[0] << " source_dir target_dir\n"
@@ -59,12 +55,6 @@ void validate_opts() {
     }
   } else if (!boost::filesystem::is_directory(dir_out)) {
     shutdown_with_error("error: %s is not a directory.", &dir_out);
-  }
-}
-
-void each_files(std::string path, std::function<void(bfs::directory_entry)> proc) {
-  for (auto file : boost::make_iterator_range(bfs::directory_iterator(path), bfs::directory_iterator())) {
-    proc(file);
   }
 }
 
