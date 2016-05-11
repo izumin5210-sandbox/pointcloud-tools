@@ -12,7 +12,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/range/iterator_range.hpp>
 
-#include "utils/pctools/utils.hpp"
+#include "pctools/utils.hpp"
 
 namespace pc = pcl::console;
 namespace bfs = boost::filesystem;

@@ -20,12 +20,12 @@ add_definitions     (${PCL_DEFINITIONS})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(TOOLS_SOURCE_DIR ${PROJECT_SOURCE_DIR}/tools)
-set(UTILS_SOURCE_DIR ${PROJECT_SOURCE_DIR}/utils)
+set(INTERNAL_SOURCE_DIR ${PROJECT_SOURCE_DIR}/internal)
 
 file(GLOB exec_src RELATIVE "${TOOLS_SOURCE_DIR}" "**/*.cpp")
 
 include_directories(
-    "${PROJECT_SOURCE_DIR}"
+    "${INTERNAL_SOURCE_DIR}"
 )
 
 foreach (cppfile ${exec_src})
