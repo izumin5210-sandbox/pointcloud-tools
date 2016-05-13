@@ -28,12 +28,10 @@ void each_files(std::string path, std::function<void(bfs::directory_entry)> proc
   }
 }
 
-template <typename T>
-void downsample(typename pcl::PointCloud<T> &cloud_in, typename pcl::PointCloud<T> &cloud_out, float voxelSize) {
-  pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_tmp(new pcl::PointCloud<pcl::PointXYZRGBA>);
-  pcl::copyPointCloud(cloud_in, *cloud_tmp);
-  pcl::VoxelGrid<T> sor;
-  sor.setInputCloud(cloud_tmp);
+template <typename PointT>
+void downsample(typename pcl::PointCloud<PointT>::Ptr cloud_in, pcl::PointCloud<PointT> &cloud_out, float voxelSize) {
+  pcl::VoxelGrid<PointT> sor;
+  sor.setInputCloud(cloud_in);
   sor.setLeafSize(voxelSize, voxelSize, voxelSize);
   sor.filter(cloud_out);
 }
