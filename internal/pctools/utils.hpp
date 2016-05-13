@@ -4,6 +4,7 @@
 #include <pcl/console/parse.h>
 #include <pcl/console/print.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/visualization/pcl_visualizer.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/range/iterator_range.hpp>
@@ -35,6 +36,20 @@ void downsample(typename pcl::PointCloud<T> &cloud_in, typename pcl::PointCloud<
   sor.setInputCloud(cloud_tmp);
   sor.setLeafSize(voxelSize, voxelSize, voxelSize);
   sor.filter(cloud_out);
+}
+
+void splitVisualizer(pcl::visualization::PCLVisualizer &visualizer, int width, int height, std::vector<int> &viewports) {
+  double x_step = 1.0 / width, y_step = 1.0 / height;
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      int idx = 2 * i + j + 1;
+      viewports.push_back(idx);
+      visualizer.createViewPort(i * x_step, 1 - (j + 1) * y_step, (i + 1) * x_step, 1 - j * y_step, idx);
+      std::stringstream ss;
+      ss << idx;
+      visualizer.addText(ss.str(), 15, 15, ss.str() + ".viewport", idx);
+    }
+  }
 }
 }
 
