@@ -21,12 +21,7 @@ int main (int argc, char** argv) {
   std::cerr << "Cloud before filtering: " << std::endl;
   std::cerr << *cloud << std::endl;
 
-  // Create the filtering object
-  pcl::StatisticalOutlierRemoval<pcl::PointXYZRGBA> sor;
-  sor.setInputCloud (cloud);
-  sor.setMeanK (50);
-  sor.setStddevMulThresh (1.0);
-  sor.filter (*cloud_filtered);
+  removeOutlier(cloud, *cloud_filtered, 50, 1.0);
 
   std::cerr << "Cloud after filtering: " << std::endl;
   std::cerr << *cloud_filtered << std::endl;

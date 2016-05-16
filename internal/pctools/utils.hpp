@@ -4,6 +4,7 @@
 #include <pcl/console/parse.h>
 #include <pcl/console/print.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 #include <pcl/visualization/pcl_visualizer.h>
 
 #include <boost/filesystem.hpp>
@@ -48,6 +49,15 @@ void splitVisualizer(pcl::visualization::PCLVisualizer &visualizer, int width, i
       visualizer.addText(ss.str(), 15, 15, ss.str() + ".viewport", idx);
     }
   }
+}
+
+template <typename PointT>
+void removeOutlier(const typename pcl::PointCloud<PointT>::Ptr cloud_in, typename pcl::PointCloud<PointT> &cloud_out, int mean_k, double stddev_mult_thr) {
+  pcl::StatisticalOutlierRemoval<PointT> sor;
+  sor.setInputCloud(cloud_in);
+  sor.setMeanK(mean_k);
+  sor.setStddevMulThresh(stddev_mult_thr);
+  sor.filter(cloud_out);
 }
 }
 
