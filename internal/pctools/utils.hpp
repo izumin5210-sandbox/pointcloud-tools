@@ -40,7 +40,7 @@ void splitVisualizer(pcl::visualization::PCLVisualizer &visualizer, int width, i
   double x_step = 1.0 / width, y_step = 1.0 / height;
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
-      int idx = 2 * i + j + 1;
+      int idx = height * i + j + 1;
       viewports.push_back(idx);
       visualizer.createViewPort(i * x_step, 1 - (j + 1) * y_step, (i + 1) * x_step, 1 - j * y_step, idx);
       std::stringstream ss;
