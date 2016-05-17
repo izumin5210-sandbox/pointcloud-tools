@@ -52,7 +52,7 @@ void splitVisualizer(pcl::visualization::PCLVisualizer &visualizer, int width, i
 }
 
 template <typename PointT>
-void removeOutlier(const typename pcl::PointCloud<PointT>::Ptr cloud_in, typename pcl::PointCloud<PointT> &cloud_out, int mean_k, double stddev_mult_thr) {
+void removeOutlier(const typename pcl::PointCloud<PointT>::ConstPtr cloud_in, typename pcl::PointCloud<PointT> &cloud_out, int mean_k, double stddev_mult_thr) {
   pcl::StatisticalOutlierRemoval<PointT> sor;
   sor.setInputCloud(cloud_in);
   sor.setMeanK(mean_k);
