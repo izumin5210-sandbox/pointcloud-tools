@@ -5,6 +5,7 @@
 #include <pcl/console/print.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/octree/octree.h>
 #include <pcl/visualization/pcl_visualizer.h>
 
 #include <boost/filesystem.hpp>
@@ -58,6 +59,35 @@ void removeOutlier(const typename pcl::PointCloud<PointT>::ConstPtr cloud_in, ty
   sor.setMeanK(mean_k);
   sor.setStddevMulThresh(stddev_mult_thr);
   sor.filter(cloud_out);
+}
+
+template <typename PointT>
+void extractDifference(const typename pcl::PointCloud<PointT>::ConstPtr cloud_in1,
+                       const typename pcl::PointCloud<PointT>::ConstPtr cloud_in2,
+                       std::vector<int> &newPointIdxVector,
+                       double resolution,
+                       int noise_filter) {
+  pcl::octree::OctreePointCloudChangeDetector<PointT> octree(resolution);
+  octree.setInputCloud(cloud_in1);
+  octree.addPointsFromInputCloud();
+  octree.switchBuffers();
+  octree.setInputCloud(cloud_in2);
+  octree.addPointsFromInputCloud();
+  octree.getPointIndicesFromNewVoxels(newPointIdxVector, noise_filter);
+}
+
+template <typename PointT>
+void extractDifference(const typename pcl::PointCloud<PointT>::ConstPtr cloud_in1,
+                       const typename pcl::PointCloud<PointT>::ConstPtr cloud_in2,
+                       typename pcl::PointCloud<PointT>::Ptr &cloud_out,
+                       double resolution,
+                       int noise_filter) {
+  std::vector<int> newPointIdxVector;
+  extractDifference<PointT>(cloud_in1, cloud_in2, newPointIdxVector, resolution, noise_filter);
+
+  for (auto i : newPointIdxVector) {
+    cloud_out->points.push_back(cloud_in2->points[i]);
+  }
 }
 }
 
