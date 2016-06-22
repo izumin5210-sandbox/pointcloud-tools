@@ -1,19 +1,23 @@
 project(tools)
 
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_PREFIX_PATH} -W -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_PREFIX_PATH} -march=native")
+#set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+set(CMAKE_BUILD_TYPE Release)
 
 if (APPLE)
-  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/Cellar/opencv3/3.1.0/share")
-  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/Cellar/qt5/5.5.1_2/lib/cmake")
+  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/Cellar/opencv3/3.1.0_3/share")
+  set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "/usr/local/Cellar/qt5/5.6.0/lib/cmake")
 endif ()
 
-find_package        (OpenCV 3.0 REQUIRED)
-find_package        (Boost COMPONENTS system filesystem program_options thread REQUIRED)
-find_package        (PCL 1.8 REQUIRED)
+find_package(PCL 1.8 REQUIRED)
+find_package(VTK 7.0 COMPONENTS vtkGUISupportQt REQUIRED)
+find_package(Boost COMPONENTS system filesystem program_options thread REQUIRED)
+find_package(OpenCV 3.1 REQUIRED)
+
 include_directories (${PCL_INCLUDE_DIRS})
 link_directories    (${PCL_LIBRARY_DIRS})
 add_definitions     (${PCL_DEFINITIONS})
@@ -34,9 +38,9 @@ foreach (cppfile ${exec_src})
   add_executable(${out} "${TOOLS_SOURCE_DIR}/${cppfile}")
   target_link_libraries(${out}
       ${PCL_LIBRARIES}
-      ${OpenCV_LIBS}
       ${Boost_LIBRARIES}
-      freenect2
+      ${OpenCV_LIBS}
       yaml-cpp
+      freenect2
   )
 endforeach (cppfile)

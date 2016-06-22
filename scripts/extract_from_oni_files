@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# files=$(ls -1 $1/*.oni)
+file=$1
+out=$2
+yaml=$3
+
+# for file in $files; do
+  serial=$(echo $file | sed 's/.*\/\([0-9T_\.]*\)\.oni/\1/')
+  mkdir -p $out/$serial
+  ./bin/oni_extractor -o $out/$serial -y $yaml $file
+# done

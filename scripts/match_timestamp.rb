@@ -51,7 +51,7 @@ loop do
 end
 
 matched_list.each.with_index do |frames, i|
-  to_dir = "#{out_dir}/#{i}"
+  to_dir = "#{out_dir}/#{Time.at(frames.values.min.to_f).strftime('%Y%m%dT%H%M%S.%6N')}"
   FileUtils.mkdir_p(to_dir, verbose: true)
   frames.each do |serial, frame|
     from_dir = dirs.select { |d| d.include?(serial) }.first
